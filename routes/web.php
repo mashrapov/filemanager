@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/files', [FileController::class, 'index'])->name('files.index');
+    Route::post('/files/upload', [FileController::class, 'upload'])->name('files.upload');
+    Route::get('/files/delete/{id}', [FileController::class, 'delete'])->name('files.delete');
+    Route::get('/files/download/{id}', [FileController::class, 'download'])->name('files.download');
+});
+require __DIR__.'/auth.php';
