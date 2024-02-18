@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class FileController extends Controller
 {
@@ -25,10 +27,18 @@ class FileController extends Controller
         ]);
 
         $file = $request->file('file');
-        $path = $file->store('public/files');
+        $originalName = $file->getClientOriginalName();
 
+        // Генерация уникального идентификатора для имени файла
+        $uniqueId = Str::random(4);
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME) . '-' . $uniqueId . '.' . $file->getClientOriginalExtension();
+
+        // Сохранение файла в директорию 'public/files'
+        $path = $file->storeAs('public/files', $fileName);
+
+        // Сохранение информации о файле в базе данных
         File::create([
-            'name' => $file->getClientOriginalName(),
+            'name' => $originalName, // Сохраняем оригинальное имя для отображения
             'path' => $path,
         ]);
 
