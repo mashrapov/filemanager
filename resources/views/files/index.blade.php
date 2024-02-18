@@ -10,8 +10,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 bg-white border-b border-gray-200">
                 <form action="{{ route('files.upload') }}" method="POST" enctype="multipart/form-data" class="mb-4">
                     @csrf
-                        <input type="file" name="file" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                    <x-button>
+                    <input type="file" name="file"
+                           class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                    <x-button style="margin-top: 1rem">
                         {{ __('Загрузить файл') }}
                     </x-button>
 
@@ -23,10 +24,13 @@
                         <div class="flex items-center justify-between py-2 border-b">
                             <div class="text-gray-600">{{ $file->name }}</div>
                             <div class="flex items-center">
-                                <button onclick="copyToClipboard('{{ asset('storage/' . str_replace('public/', '', $file->path)) }}')" class="px-2 py-1 text-black bg-blue-600 rounded hover:bg-blue-800">
+                                <button
+                                    onclick="copyToClipboard('{{ asset('storage/' . str_replace('public/', '', $file->path)) }}')"
+                                    class="px-2 py-1 text-black bg-blue-600 rounded hover:bg-blue-800">
                                     Копировать URL
                                 </button>
-                                <a href="{{ route('files.delete', $file->id) }}" class="text-red-600 hover:text-red-900">Удалить</a>
+                                <a href="{{ route('files.delete', $file->id) }}"
+                                   class="text-red-600 hover:text-red-900">Удалить</a>
                             </div>
                         </div>
                     @endforeach
@@ -58,9 +62,9 @@
                 copyToClipboardFallback(text);
                 return;
             }
-            navigator.clipboard.writeText(text).then(function() {
+            navigator.clipboard.writeText(text).then(function () {
                 alert('URL скопирован в буфер обмена');
-            }, function(err) {
+            }, function (err) {
                 console.error('Не удалось скопировать URL: ', err);
             });
         }
